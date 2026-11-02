@@ -1,0 +1,35 @@
+# FREQUENCY — Mac local AI music studio
+
+A lightweight localhost web UI for ACE-Step 1.5, with a 10-second AI sketch, 30-second repeating WAV, and quick tonal edits. **GitHub Pages cannot execute AI models or local Python servers.** Clone/download this repository and open `START_WEBSITE.command` on your Mac.
+
+## Start
+
+1. Download this repository (Code → Download ZIP) and extract it, or clone it with Git.
+2. On Apple Silicon macOS, double-click `START_WEBSITE.command`, or run `bash START_WEBSITE.command` in Terminal.
+3. The browser opens automatically at `http://127.0.0.1:8765` (or another available port).
+4. First run installs ACE-Step dependencies and fetches the main model. **Internet and sufficient free disk space are required.** This is not instantaneous: the model is large. The site displays an installation phase and errors.
+5. On later runs, already-downloaded resources are reused.
+
+## How auto connection works
+
+- Runs the local web UI immediately, without starting a native desktop app.
+- Reuses a working local ACE-Step API on `127.0.0.1:8001` where available.
+- Fetches ACE-Step source from `https://github.com/ace-step/ACE-Step-1.5` into `~/Library/Application Support/FREQUENCY/ACE-Step-1.5` when missing.
+- Installs `uv` via its official installer if missing; `uv sync` installs dependencies.
+- Attempts model download via Hugging Face, then ModelScope if the first fails.
+- Launches the official `start_api_server_macos.sh` when the API is not already running.
+- If download fails, the site shows an error instead of claiming a successful connection.
+- Logs: `~/Library/Application Support/FREQUENCY/frequency-web.log` and `ace-step.log`.
+
+## Requirements / limitations
+
+- Apple Silicon Mac (including ARM64 MacBook Neo); native Python 3, Git, sufficient disk and memory.
+- 8GB MacBook Neo has significant memory and inference constraints; a 10-second draft may still take a long time or fail. Looping to 30 seconds **does not** mean 30 seconds of unique music.
+- The currently installed backend may use different model paths or API versions, and compatibility is not guaranteed. Check backend logs on mismatch.
+- This code **cannot** guarantee a finished game-quality track or immediate generation. ACE-Step model download is a real prerequisite.
+- All services bind to localhost; don't expose port 8001/8765 publicly.
+- ACE-Step is third-party software; review its licensing and terms separately before commercial use.
+
+## Version notes
+
+The starter uses the existing FREQUENCY iterative interface and proxy. Raw AI music can be edited without model inference for tone/level changes only. Melody/instrumentation changes require new AI inference.
